@@ -22,7 +22,7 @@ app.get("/", function (req, res) {
         res.render("index", { burgers: response }) //returns back html data
     });
 });
-add.post("/api/burgers/", function (req, res) {
+app.post("/api/burgers/", function (req, res) {
     orm.addBurger(req.body.burgerName, function (response) {
         res.json({ id: response.InsertId });
 
