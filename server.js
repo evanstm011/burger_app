@@ -11,14 +11,31 @@ app.use(express.json());
 
 // set Handlebars
 var exphbs = require("express-handlebars");
+const orm = require("./config/orm");
 
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
+app.get("/", function (req, res) {
+    orm.displayAllBurgers(function (response) {
+        // console.log(response);
+        res.render("index", { burgers: response }) //returns back html data
+    });
+});
+add.post("/api/burgers/", function (req, res) {
+    orm.addBurger(req.body.burgerName, function (response) {
+        res.json({ id: response.InsertId });
 
-// Import routes and give server access to them
+    });
+});
+
+app.put("/api/burgers/:id", function (req, res) {
+    orm.updateBurger(req.params.id, function (response) {
+        res.end();
+    });
+});
 
 
 app.listen(PORT, function () {
-    console.log(`App is listening at localhost:${PORT}`);
+    console.log("Server listening on: http://localhost:" + PORT);
 });
